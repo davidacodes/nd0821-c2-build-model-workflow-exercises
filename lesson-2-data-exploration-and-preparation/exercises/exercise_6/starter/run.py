@@ -39,17 +39,18 @@ def go(args):
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df = df.dropna(subset=[c for c in numerical_columns if c in df.columns])
 
-    # Split model_dev/test
-    logger.info("Splitting data into train and test")
+    # Split first in model _dev/test, then we further divide model_dev in train and validation
+    logger.info("Splitting data into train, val and test")
     splits = {}
 
-    ###################################
-    # COMPLETE the following line     #
-    ###################################
+    splits["train"], splits["test"] = train_test_split(
+        df,
+        test_size=args.test_size,
+        random_state=args.random_state,
+        stratify=df[args.stratify] if args.stratify != 'null' else None,
+    )
 
-    splits["train"], splits["test"] = # USE train_test_split here to split df according to the provided args.test_size
-
-    # Now we save the artifacts. We use a temporary directory so we do not leave
+    # Save the artifacts. We use a temporary directory so we do not leave
     # any trace behind
     with tempfile.TemporaryDirectory() as tmp_dir:
 
