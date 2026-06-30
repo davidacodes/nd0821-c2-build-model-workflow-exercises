@@ -16,6 +16,10 @@ entry_points:
     # NOTE: the -s flag is necessary, otherwise pytest will capture all the output and it
     # will not be uploaded to W&B. Hence, the log in W&B will be empty.
     command: >-
-      pytest -s -vv . --reference_artifact {reference_artifact} \
-                      --sample_artifact {sample_artifact} \
+      pytest -s -vv . --reference_artifact {"exercise_6/data_train.csv:latest"} \
+                      --sample_artifact {"exercise_6/data_test.csv:latest"} \
                       --ks_alpha {ks_alpha}
+
+      mlflow run . -P reference_artifact="exercise_6/data_train.csv:latest" \
+                   -P sample_artifact="exercise_6/data_test.csv:latest" \
+                   -P ks_alpha=0.05
